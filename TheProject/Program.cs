@@ -6,7 +6,7 @@ namespace TheProject
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("How do I get this Git thing working?");
+            Console.WriteLine("Hopefully I got this Git thing working");
         }
     }
 }
