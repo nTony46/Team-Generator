@@ -5,44 +5,88 @@ namespace TheProject
 {
     class Program
     {
-        static List<List<string>> createTeams(int numTeams, int numPlayers)
+        /* Function createPlayerList is meant to put all the names of players into a List. 
+         * Example w/ (numPlayers = 3):
+         * 
+         * Jack  => teamList = [Jack]
+         * Henry => teamList = [Jack, Henry]
+         * John  => teamList = [Jack, Henry, John]
+         * 
+         * returns teamList
+         */
+        static List<string> createPlayerList(int numPlayers)
         {
-            var totalTeam = new List<List<string>>();
+            Console.WriteLine("Enter " + numPlayers + " names: ");
+
+            var playerList = new List<string>(); 
+            for (int i = 0; i < numPlayers; i++) 
+            {            
+                playerList.Add(Console.ReadLine()); 
+            }
+
+            return playerList;
+        }
+
+        /* Function createTeams is meant to create a numTeams amount of random teams
+         * IN PROGRESS -- use rand to generate
+         */
+        static List<List<string>> createTeams(int numTeams)
+        {
+            var teamResult = new List<List<string>>();
 
             for (int i = 0; i < numTeams; i++)
             {
 
                 var playerList = new List<string>();
-                Console.WriteLine("Enter the player names for Team " + (i + 1) + ": ");
 
-                for (int j = 0; j < numPlayers; j++)
+                for (int j = 0; j < numTeams; j++)
                 {
                     string playerName = Console.ReadLine();
                     playerList.Add(playerName);
                 }
 
-                totalTeam.Add(playerList);
+                teamResult.Add(playerList);
             }
-            return totalTeam;
+            return teamResult;
 
         }
-
 
         static void Main(string[] args)
         {
             Console.WriteLine("Initialzing Team Generator...");
+            int playerNum;
+            int teamNum;
+            bool check = true;
 
-            Console.WriteLine("How many teams do you want? ");
-            int teamNum = Convert.ToInt32(Console.ReadLine());
+            do
+            {
+                Console.WriteLine("How many total players are there? "); 
+                playerNum = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine("How many players are on each team? ");
-            int playerNum = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("How many teams do you want? ");
+                teamNum = Convert.ToInt32(Console.ReadLine());
 
+
+                if (playerNum % teamNum != 0) // Checks if each time has the same amount of players
+                {
+                    Console.WriteLine("Teams will not be even. Continue? (y/n) ");
+                    if (Console.ReadLine() == "n") check = false;
+
+                    while (Console.KeyAvailable)
+                        Console.ReadKey(false); // skips previous input chars. Meant to clear buffer
+                }
+                else
+                {
+                    check = true;
+                }
+
+
+            } while(check == false);
             
 
-            var teams = createTeams(teamNum, playerNum);
+            //var test = createTeams(teamNum);
 
-            Console.WriteLine(teams);
+            //Console.WriteLine(test);
         }
         
     }
