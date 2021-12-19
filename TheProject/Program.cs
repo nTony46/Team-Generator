@@ -26,14 +26,13 @@ namespace TheProject
             {            
                 playerList.Add(Console.ReadLine().ToString()); 
             }
-
             return playerList;
         }
 
         /* The function 'shuffle' uses the Fisher-Yates algorithm
          * 
-         * It swaps the elements in List allPlayers each iteration, 
-         * starting at the end and moving towards the beginning of the List.
+         * It swaps the positions of elements randomly with other elements in List allPlayers 
+         * each iteration, starting at the end and moving towards the beginning of the List.
          */
         static List<string> shuffle(List<string> allPlayers) 
         {
@@ -65,30 +64,23 @@ namespace TheProject
         static List<List<string>> createTeamsList(List<string> players, int numTeams)
         {
             var teamResultList = new List<List<string>>();
-            int numPlayers = players.Count;
-            int playersEachTeam = numPlayers / numTeams;
+            int numPlayersInList = players.Count;
+            int playersEachTeam = numPlayersInList / numTeams;
 
             int currIndex = 0;
-            int lastIndex = numPlayers - 1;
+            int lastIndex = numPlayersInList - 1;
 
             for (int i = 0; i < numTeams; i++)
             {
                 var iterationPlayerList = new List<string>();
 
-
-                /* This if-statement is for the case of uneven teams.
-                 * 
-                 * It iterates starting at the end of List 'players' 
-                 * and distributes the "remainder players" to the teams first.
-                 */
-                if (numPlayers % numTeams != 0)
-                {
-                    iterationPlayerList.Add(players[lastIndex]);
-                    lastIndex--;
-                    numPlayers--;
+                if (numPlayersInList % numTeams != 0)               // This if-statement is for the case of uneven teams.
+                {                                                   //
+                    iterationPlayerList.Add(players[lastIndex]);    // It iterates starting at the end of List 'players'
+                    lastIndex--;                                    // and distributes the "remainder players" to the teams first.
+                    numPlayersInList--;
                 }
-
-
+                
                 for (int j = 0; j < playersEachTeam; j++)
                 {
                     iterationPlayerList.Add(players[currIndex]);
@@ -125,8 +117,7 @@ namespace TheProject
                 Console.WriteLine();
             }
         }
-
-        
+     
         static void Main(string[] args)
         {            
             Console.WriteLine("Initialzing Team Generator...");
@@ -142,19 +133,25 @@ namespace TheProject
                 Console.WriteLine("How many teams do you want? ");
                 teamNum = Convert.ToInt32(Console.ReadLine());
 
-                if (playerNum % teamNum != 0)    // Checks if each time has the same amount of players
+                if (playerNum % teamNum != 0)    // Checks if number of players distributed among each team is equal
                 {
                     Console.WriteLine("Teams will not be even. Continue? (y/n) ");
-                    if (Console.ReadLine() == "n") check = false;    // sets the condition so the do-while loop will rereun
+                    if (Console.ReadLine().ToLower() == "n")
+                    {
+                        Console.WriteLine("Do you want to re-enter(r) inputs or exit(e) program? (r/e)");
 
-                    while (Console.KeyAvailable) 
-                    Console.ReadKey(false);    // Skips previous input chars. Meant to clear buffer.
-                }
-                else
-                {
-                    check = true;    // If User continues, sets the condition to true so the do-while loop ends
-                }
-                
+                        if (Console.ReadLine().ToLower() == "r") check = false;
+                        else
+                        {
+                            Console.WriteLine("\nProgram exited successfully.");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        check = true;
+                    }                   
+                }              
             } while(check == false);
             
             var playerList = createPlayerList(playerNum);
@@ -162,9 +159,7 @@ namespace TheProject
             var teamsList = createTeamsList(shuffledTeam, teamNum);
 
             Console.WriteLine();
-
             printTeams(teamsList);            
         }        
     }
-
 }
